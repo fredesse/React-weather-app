@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
 
-//save the API KEY as a new variable
+//retrieve the API key and store it as a variable
 const api_key = process.env.REACT_APP_API_KEY;
-//const api_key = '8c7a78853d984985388cdf27af04f4b9';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ class App extends Component {
     }
   }
 
-  //get current location of user
+  //get current location of user and call the API
   getLocation = () => {
     let showPosition = (position) => {
       this.setState({
@@ -23,6 +23,10 @@ class App extends Component {
         longitude: position.coords.longitude
       });
       console.log("STATE", this.state);
+      axios.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID=${api_key}`)
+        .then(res => {
+          console.log("LOC RESPONSE: ", res.data);
+        })
     }
 
     if (navigator.geolocation) {
@@ -31,6 +35,9 @@ class App extends Component {
     } else {
       alert("Current location is not supported by this browser");
     }
+    // let lat = this.state.latitude;
+    // let lon = this.state.longitude;
+
   }
 
   //update state with search value
@@ -50,7 +57,7 @@ class App extends Component {
 
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${loc}&APPID=${api_key}`)
       .then(res => {
-        console.log('RESPONSE:', res.data);
+        console.log("CITY RESPONSE:", res.data);
       })
 
   }
