@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios';
 
+//save the API KEY as a new variable
+const api_key = process.env.REACT_APP_API_KEY;
+//const api_key = '8c7a78853d984985388cdf27af04f4b9';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +15,7 @@ class App extends Component {
     }
   }
 
+  //get current location of user
   getLocation = () => {
     let showPosition = (position) => {
       this.setState({
@@ -28,6 +33,7 @@ class App extends Component {
     }
   }
 
+  //update state with search value
   handleSearch = (event) => {
     this.setState({
       city: event.target.value
@@ -35,18 +41,25 @@ class App extends Component {
     console.log("CITY", this.state.city);
   }
 
+  //submit a GET request
   handleSubmit = (e) => {
     e.preventDefault();
-    let data = {
 
-    }
+    //set a new variable with the city value
+    let loc = this.state.city;
+
+    axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${loc}&APPID=${api_key}`)
+      .then(res => {
+        console.log('RESPONSE:', res.data);
+      })
+
   }
 
   render() {
     return (
       <div className="">
         <div>
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <input type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
             <input type="submit"/>
           </form>
