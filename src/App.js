@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
+import Toggle from 'react-toggle';
 
 //retrieve the API key and store it as a variable
 const api_key = process.env.REACT_APP_API_KEY;
@@ -93,7 +94,6 @@ class App extends Component {
     let weekday = date.getDay();
     let month = date.getMonth();
     let year = date.getFullYear();
-    console.log(`${weekday}, ${month} ${day} ${year}`);
     return `${days[weekday]}, ${months[month]} ${day} ${year}`
   }
 
@@ -123,11 +123,20 @@ class App extends Component {
             <div>
               <div>
                 <div>
-                  <button>Back</button>
+                  <div onClick={ () => { this.setState({displayWeather: false})}}>BACK</div>
                   <h2>{this.state.city}</h2>
                 </div>
                 <div>
-                  <div onClick={ () => this.setState({})}>Celsius</div>
+                  <label>
+                    <Toggle
+                      defaultChecked={this.state.soupIsReady}
+                      className='custom-classname'
+                      icons={{
+                        checked: "ON",
+                        unchecked: "OFF",
+                      }}
+                      onChange={this.handleSoupChange} />
+                  </label>
                 </div>
               </div>
               <div>
