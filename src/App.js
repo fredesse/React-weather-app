@@ -64,13 +64,7 @@ class App extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
-      <div>
-        <Switch>
-          <Route exact path='/' component={Search}/>
-          <Route exact path='/dashboard' render={ (props) => (<Dashboard test="hi" {...props} />)}/>
-        </Switch>
-=======
+>>>>>>> parent of a0d4ce2... Add react router
       <div className="">
         <div>
           <form onSubmit={this.handleSubmit}>
@@ -84,6 +78,8 @@ class App extends Component {
         <div>
           <p>use my <a onClick={() => { this.getLocation()}}>current position</a></p>
         </div>
+>>>>>>> parent of a0d4ce2... Add react router
+=======
 >>>>>>> parent of a0d4ce2... Add react router
       </div>
     );
