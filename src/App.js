@@ -12,7 +12,16 @@ class App extends Component {
       latitude: '',
       longitude: '',
       city: '',
-      displayWeather: false
+      tempInCelsius: true,
+      displayWeather: false,
+      currentDate: '',
+      currentWeatherDesc: '',
+      currentTemp: '',
+      currentWeatherIcon: '',
+      currentWeatherMorning: '',
+      currentWeatherDay: '',
+      currentWeatherEvening: '',
+      currentWeatherNight: '',
     }
   }
 
@@ -56,7 +65,36 @@ class App extends Component {
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?${URL}`)
       .then(res => {
         console.log("AXIOS RESPONSE:", res.data);
+        this.setState({
+          latitude: res.data.city.coord.lat,
+          longitude: res.data.city.coord.lon,
+          city: res.data.city.name,
+          displayWeather: true,
+          currentDate: res.data.list[0].dt_txt,
+          currentWeatherDesc: res.data.list[0].weather[0].description,
+          currentWeatherIcon: res.data.list[0].weather[0].icon,
+          currentTemp: res.data.list[0].main.temp,
+        })
       });
+  }
+
+  calculateTemp = (temp) => {
+    if (this.state.tempInCelsius) {
+      return Math.round(temp - 273.15) + "℃";
+    }
+    return Math.round((temp * 9/5) - 459.67) + "℉";
+  }
+
+  findDate = () => {
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
+    let date = new Date();
+    let day = date.getDate();
+    let weekday = date.getDay();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    console.log(`${weekday}, ${month} ${day} ${year}`);
+    return `${days[weekday]}, ${months[month]} ${day} ${year}`
   }
 
   render() {
@@ -89,18 +127,35 @@ class App extends Component {
                   <h2>{this.state.city}</h2>
                 </div>
                 <div>
-                  <button>Celsius</button>
+                  <div onClick={ () => this.setState({})}>Celsius</div>
                 </div>
               </div>
               <div>
                 <div>
-                  <h3>DATE</h3>
-                  <h4>CURRENT WEATHER</h4>
+                  <h3>{this.findDate()}</h3>
+                  <h4>{this.state.currentWeatherDesc}</h4>
                 </div>
                 <div>
-                  <div>TEMP</div>
-                  <div>ICON</div>
-                  <div>TODAY FORECAST</div>
+                  <div>{this.calculateTemp(this.state.currentTemp)}</div>
+                  <div>{this.state.currentWeatherIcon}</div>
+                  <div>
+                    <div>
+                      <div>Morning</div>
+                      <div></div>
+                    </div>
+                    <div>
+                      <div>Day</div>
+                      <div></div>
+                    </div>
+                    <div>
+                      <div>Evening</div>
+                      <div></div>
+                    </div>
+                    <div>
+                      <div>Night</div>
+                      <div></div>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <div>5 DAY FORECAST</div>
