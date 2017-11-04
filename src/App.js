@@ -12,6 +12,7 @@ class App extends Component {
       latitude: '',
       longitude: '',
       city: '',
+      displayWeather: false
     }
   }
 
@@ -23,10 +24,9 @@ class App extends Component {
         longitude: position.coords.longitude
       });
       console.log("STATE", this.state);
-      axios.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID=${api_key}`)
-        .then(res => {
-          console.log("LOC RESPONSE: ", res.data);
-        })
+      let lat = this.state.latitude;
+      let lon = this.state.longitude;
+      this.axiosGETreq(`lat=${lat}&lon=${lon}&APPID=${api_key}`);
     }
 
     if (navigator.geolocation) {
@@ -35,9 +35,6 @@ class App extends Component {
     } else {
       alert("Current location is not supported by this browser");
     }
-    // let lat = this.state.latitude;
-    // let lon = this.state.longitude;
-
   }
 
   //update state with search value
@@ -51,36 +48,67 @@ class App extends Component {
   //submit a GET request
   handleSubmit = (e) => {
     e.preventDefault();
-
-    //set a new variable with the city value
     let loc = this.state.city;
+    this.axiosGETreq(`q=${loc}&APPID=${api_key}`);
+  }
 
-    axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${loc}&APPID=${api_key}`)
+  axiosGETreq = (URL) => {
+    axios.get(`http://api.openweathermap.org/data/2.5/forecast?${URL}`)
       .then(res => {
-        console.log("CITY RESPONSE:", res.data);
-      })
-
+        console.log("AXIOS RESPONSE:", res.data);
+      });
   }
 
   render() {
     return (
->>>>>>> parent of a0d4ce2... Add react router
-      <div className="">
-        <div>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
-            <input type="submit"/>
-          </form>
-        </div>
-        <div>
-          <p>or</p>
-        </div>
-        <div>
-          <p>use my <a onClick={() => { this.getLocation()}}>current position</a></p>
-        </div>
->>>>>>> parent of a0d4ce2... Add react router
-=======
->>>>>>> parent of a0d4ce2... Add react router
+      <div>
+        {
+          !this.state.displayWeather && (
+            <div className="">
+              <div>
+                <form onSubmit={this.handleSubmit}>
+                  <input type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
+                  <input type="submit"/>
+                </form>
+              </div>
+              <div>
+                <p>or</p>
+              </div>
+              <div>
+                <p>use my <a onClick={() => { this.getLocation()}}>current position</a></p>
+              </div>
+            </div>
+          )
+        }
+        {
+          this.state.displayWeather && (
+            <div>
+              <div>
+                <div>
+                  <button>Back</button>
+                  <h2>{this.state.city}</h2>
+                </div>
+                <div>
+                  <button>Celsius</button>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <h3>DATE</h3>
+                  <h4>CURRENT WEATHER</h4>
+                </div>
+                <div>
+                  <div>TEMP</div>
+                  <div>ICON</div>
+                  <div>TODAY FORECAST</div>
+                </div>
+                <div>
+                  <div>5 DAY FORECAST</div>
+                </div>
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }
