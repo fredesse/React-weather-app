@@ -11,7 +11,7 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={Search}/>
-          <Route exact path='/dashboard' component={Dashboard}/>
+          <Route exact path='/dashboard' render={ (props) => (<Dashboard test="hi" {...props} />)}/>
         </Switch>
       </div>
     );
@@ -19,3 +19,5 @@ class App extends Component {
 }
 
 export default App;
+// <Route exact path='/' component={Search}/>
+// <Route exact path='/dashboard' component={Dashboard}/>

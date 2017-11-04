@@ -26,6 +26,8 @@ class Search extends Component {
       axios.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${this.state.latitude}&lon=${this.state.longitude}&APPID=${api_key}`)
         .then(res => {
           console.log("LOC RESPONSE: ", res.data);
+          //direct the user to the dashboard
+          this.props.history.push('/dashboard');
         });
     }
 
@@ -55,6 +57,8 @@ class Search extends Component {
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${loc}&APPID=${api_key}`)
       .then(res => {
         console.log("CITY RESPONSE:", res.data);
+        //direct the user to the dashboard
+        this.props.history.push('/dashboard');
       });
   }
 
@@ -71,8 +75,9 @@ class Search extends Component {
           <p>or</p>
         </div>
         <div>
-          <p>use my <a onClick={() => { this.getLocation()}}>current position</a></p>
+          <p>use my <a onClick={() => { this.getLocation() }}>current position</a></p>
         </div>
+        <button onClick={() => { this.sendToDashboard() }}>CLICK ME</button>
       </div>
     );
   }

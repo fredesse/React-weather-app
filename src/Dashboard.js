@@ -9,6 +9,7 @@ class Dashboard extends Component {
     return (
       <div>
         <h1>Hello world</h1>
+        <button onClick={() => { console.log(this.props) }}>CLICK ME</button>
       </div>
     );
   }
