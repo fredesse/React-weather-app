@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 
 class Dashboard extends Component {
@@ -16,3 +17,5 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
+=======
+>>>>>>> parent of a0d4ce2... Add react router
