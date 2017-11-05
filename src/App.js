@@ -110,16 +110,16 @@ class App extends Component {
     let forecast = this.state.forecast;
     for(let i = 0; i < 8; i++) {
       if (forecast[i].dt_txt[12] === "6") {
-        this.setState({currentWeatherMorning: this.calculateTemp(forecast[i].main.temp)});
+        this.setState({currentWeatherMorning: forecast[i].main.temp});
       }
       if (forecast[i].dt_txt[12] === "2") {
-        this.setState({currentWeatherDay: this.calculateTemp(forecast[i].main.temp)});
+        this.setState({currentWeatherDay: forecast[i].main.temp});
       }
       if (forecast[i].dt_txt[12] === "8") {
-        this.setState({currentWeatherEvening: this.calculateTemp(forecast[i].main.temp)});
+        this.setState({currentWeatherEvening: forecast[i].main.temp});
       }
       if (forecast[i].dt_txt[12] === "0") {
-        this.setState({currentWeatherNight: this.calculateTemp(forecast[i].main.temp)});
+        this.setState({currentWeatherNight: forecast[i].main.temp});
       }
     }
   }
@@ -155,6 +155,12 @@ class App extends Component {
     return days[weekday + index];
   }
 
+  handleTempChange = (e) => {
+    console.log("TEMP", e.target.checked);
+    this.setState({tempInCelsius: e.target.checked});
+    this.forceUpdate();
+  }
+
   render() {
     return (
       <div>
@@ -187,13 +193,13 @@ class App extends Component {
                 <div>
                   <label>
                     <Toggle
-                      defaultChecked={this.state.soupIsReady}
+                      defaultChecked={this.state.tempInCelsius}
                       className='custom-classname'
                       icons={{
                         checked: "ON",
                         unchecked: "OFF",
                       }}
-                      onChange={this.handleSoupChange} />
+                      onChange={this.handleTempChange} />
                   </label>
                 </div>
               </div>
@@ -208,19 +214,19 @@ class App extends Component {
                   <div>
                     <div>
                       <div>Morning</div>
-                      <div>{this.state.currentWeatherMorning}</div>
+                      <div>{this.calculateTemp(this.state.currentWeatherMorning)}</div>
                     </div>
                     <div>
                       <div>Day</div>
-                      <div>{this.state.currentWeatherDay}</div>
+                      <div>{this.calculateTemp(this.state.currentWeatherDay)}</div>
                     </div>
                     <div>
                       <div>Evening</div>
-                      <div>{this.state.currentWeatherEvening}</div>
+                      <div>{this.calculateTemp(this.state.currentWeatherEvening)}</div>
                     </div>
                     <div>
                       <div>Night</div>
-                      <div>{this.state.currentWeatherNight}</div>
+                      <div>{this.calculateTemp(this.state.currentWeatherNight)}</div>
                     </div>
                   </div>
                 </div>
