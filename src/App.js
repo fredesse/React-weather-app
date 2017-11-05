@@ -70,7 +70,7 @@ class App extends Component {
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?${URL}`)
       .then(res => {
         console.log("AXIOS RESPONSE:", res.data);
-        this.setState({
+        let weatherData = {
           latitude: res.data.city.coord.lat,
           longitude: res.data.city.coord.lon,
           city: res.data.city.name,
@@ -80,10 +80,25 @@ class App extends Component {
           currentWeatherIcon: res.data.list[0].weather[0].icon,
           currentTemp: res.data.list[0].main.temp,
           forecast: res.data.list
+        }
+        this.setState({
+          latitude: weatherData.latitude,
+          longitude: weatherData.longitude,
+          city: weatherData.city,
+          displayWeather: weatherData.displayWeather,
+          currentDate: weatherData.currentDate,
+          currentWeatherDesc: weatherData.currentWeatherDesc,
+          currentWeatherIcon: weatherData.currentWeatherIcon,
+          currentTemp: weatherData.currentTemp,
+          forecast: weatherData.forecast
         });
         this.getTodaysTemps();
         this.getFiveDayForecast();
         console.log("TODAY", this.state.fiveDayForecast);
+        localStorage.setItem('data', JSON.stringify(weatherData));
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -95,8 +110,6 @@ class App extends Component {
   }
 
   findDate = () => {
-    //let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    //let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
     let date = new Date();
     let day = date.getDate();
     let weekday = date.getDay();
@@ -106,22 +119,28 @@ class App extends Component {
   }
 
   getTodaysTemps = () => {
-    //console.log(this.state.forecast[0].dt_txt[12]);
     let forecast = this.state.forecast;
+    let todaysTemps = {};
     for(let i = 0; i < 8; i++) {
       if (forecast[i].dt_txt[12] === "6") {
         this.setState({currentWeatherMorning: forecast[i].main.temp});
+        todaysTemps["currentWeatherMorning"] = forecast[i].main.temp;
       }
       if (forecast[i].dt_txt[12] === "2") {
         this.setState({currentWeatherDay: forecast[i].main.temp});
+        todaysTemps["currentWeatherDay"] = forecast[i].main.temp;
       }
       if (forecast[i].dt_txt[12] === "8") {
         this.setState({currentWeatherEvening: forecast[i].main.temp});
+        todaysTemps["currentWeatherEvening"] = forecast[i].main.temp;
       }
       if (forecast[i].dt_txt[12] === "0") {
         this.setState({currentWeatherNight: forecast[i].main.temp});
+        todaysTemps["currentWeatherNight"] = forecast[i].main.temp;
       }
     }
+    console.log("POOO", todaysTemps);
+    localStorage.setItem('todaysTemps', JSON.stringify(todaysTemps));
   }
 
   getFiveDayForecast = () => {
@@ -146,10 +165,12 @@ class App extends Component {
       container.unshift(today);
     }
     this.setState({fiveDayForecast: container});
+    //let containerObj = { forecastArray: container};
+    localStorage.setItem('fiveDayForecast', JSON.stringify(this.state.fiveDayForecast));
+    console.log("I WAS EXECUTED");
   }
 
   whatDayIsIt = (index) => {
-    //let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
     let date = new Date();
     let weekday = date.getDay();
     return days[weekday + index];
@@ -159,6 +180,35 @@ class App extends Component {
     console.log("TEMP", e.target.checked);
     this.setState({tempInCelsius: e.target.checked});
     this.forceUpdate();
+  }
+
+  componentDidMount = () => {
+    const cachedData = JSON.parse(localStorage.getItem('data'));
+    const cachedFiveDayForecast = JSON.parse(localStorage.getItem('fiveDayForecast'));
+    const cachedTodaysTemps = JSON.parse(localStorage.getItem('todaysTemps'));
+
+    if (cachedData) {
+      console.log("CACHED DATA", cachedData);
+      console.log("CONTAINER", cachedFiveDayForecast);
+      console.log("WHEEEE", cachedTodaysTemps);
+      //set state with cached data
+      this.setState({
+        latitude: cachedData.latitude,
+        longitude: cachedData.longitude,
+        city: cachedData.city,
+        displayWeather: cachedData.displayWeather,
+        currentDate: cachedData.currentDate,
+        currentWeatherDesc: cachedData.currentWeatherDesc,
+        currentWeatherIcon: cachedData.currentWeatherIcon,
+        currentTemp: cachedData.currentTemp,
+        forecast: cachedData.forecast,
+        fiveDayForecast: cachedFiveDayForecast,
+        currentWeatherMorning: cachedTodaysTemps.currentWeatherMorning,
+        currentWeatherDay: cachedTodaysTemps.currentWeatherDay,
+        currentWeatherEvening: cachedTodaysTemps.currentWeatherEvening,
+        currentWeatherNight: cachedTodaysTemps.currentWeatherNight
+      });
+    }
   }
 
   render() {
@@ -252,3 +302,6 @@ class App extends Component {
 }
 
 export default App;
+//fix current date, get it from state
+//on refresh don't change F back to C
+//<button onClick={ () => {this.poopy()}}>CLICK</button>
