@@ -125,6 +125,7 @@ class App extends Component {
       });
   }
 
+  //since temps are coming as Kelvins we need to convert them
   calculateTemp = (temp) => {
     if (this.state.tempInCelsius) {
       return Math.round(temp - 273.15) + "℃";
@@ -141,6 +142,7 @@ class App extends Component {
     return `${days[weekday]}, ${months[month]} ${day} ${year}`
   }
 
+  //get temps for today by looping through the weather data array
   getTodaysTemps = () => {
     let forecast = this.state.forecast;
     let todaysTemps = {};
@@ -165,6 +167,7 @@ class App extends Component {
     localStorage.setItem('todaysTemps', JSON.stringify(todaysTemps));
   }
 
+  //get five day forecast array by searching for the 12pm time
   getFiveDayForecast = () => {
     let forecast = this.state.forecast;
     let container = [];
@@ -196,6 +199,7 @@ class App extends Component {
     return (<p className="forecast-day">{days[weekday + index]}</p>);
   }
 
+  //this sets tempInCelsius to either true or false
   handleTempChange = (e) => {
     this.setState({tempInCelsius: e.target.checked});
     localStorage.setItem('temp', JSON.stringify(e.target.checked));
@@ -330,5 +334,3 @@ class App extends Component {
 }
 
 export default App;
-//fix current date, get it from state
-//on refresh don't change F back to C
