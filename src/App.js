@@ -24,7 +24,7 @@ class App extends Component {
       currentWeatherEvening: '',
       currentWeatherNight: '',
       forecast: '',
-      fiveDayForecast: ''
+      fiveDayForecast: []
     }
   }
 
@@ -80,6 +80,8 @@ class App extends Component {
           forecast: res.data.list
         });
         this.getTodaysTemps();
+        this.getFiveDayForecast();
+        console.log("TODAY", this.state.fiveDayForecast);
       });
   }
 
@@ -91,8 +93,8 @@ class App extends Component {
   }
 
   findDate = () => {
-    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
     let date = new Date();
     let day = date.getDate();
     let weekday = date.getDay();
@@ -118,10 +120,10 @@ class App extends Component {
         this.setState({currentWeatherNight: this.calculateTemp(forecast[i].main.temp)});
       }
     }
-    this.getFiveDayForecast(forecast);
   }
 
-  getFiveDayForecast = (forecast) => {
+  getFiveDayForecast = () => {
+    let forecast = this.state.forecast;
     let container = [];
     for (let i = 0; i < forecast.length; i++) {
       if (forecast[i].dt_txt[12] === "2") {
@@ -212,8 +214,14 @@ class App extends Component {
                   </div>
                 </div>
                 <div>
-                  <div>5 DAY FORECAST</div>
-                  <button onClick={ () => { console.log("HEY", this.state.fiveDayForecast)}}>CLICK</button>
+                  <div>
+                    {this.state.fiveDayForecast.map((forecast) => (
+                      <div>
+                        <h3>{this.calculateTemp(forecast.main.temp)}</h3>
+                      </div>
+                    )
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -225,5 +233,10 @@ class App extends Component {
 }
 
 export default App;
-// <Route exact path='/' component={Search}/>
-// <Route exact path='/dashboard' component={Dashboard}/>
+// {this.state.fiveDayForecast.map((forecast) => (
+//   <div>
+//     <h2>{this.days[0]}</h2>
+//     <h3>{this.calculateTemp(forecast.main.temp)}</h3>
+//   </div>
+// )
+// )}
