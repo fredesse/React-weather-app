@@ -1,0 +1,19 @@
+/*///////////////////////////////////////
+GENERAL STYLES
+///////////////////////////////////////*/
+body, html{
+  height:100%;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: #515151;
+  font-family: 'Roboto', sans-serif
+}
+
+textarea:focus,
+input:focus,
+*:focus {
+    outline: none;
+}

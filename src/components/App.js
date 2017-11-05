@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../css/App.css';
+import '../css/toggleButton.css';
+import '../css/dashboard.css';
 import axios from 'axios';
 import Toggle from 'react-toggle';
+
+import Search from 'react-icons/lib/md/search';
+import BackArrow from 'react-icons/lib/md/arrow-back';
 
 //retrieve the API key and store it as a variable
 const api_key = process.env.REACT_APP_API_KEY;
@@ -165,7 +170,6 @@ class App extends Component {
       container.unshift(today);
     }
     this.setState({fiveDayForecast: container});
-    //let containerObj = { forecastArray: container};
     localStorage.setItem('fiveDayForecast', JSON.stringify(this.state.fiveDayForecast));
     console.log("I WAS EXECUTED");
   }
@@ -216,29 +220,23 @@ class App extends Component {
       <div>
         {
           !this.state.displayWeather && (
-            <div className="">
-              <div>
-                <form onSubmit={this.handleSubmit}>
-                  <input type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
-                  <input type="submit"/>
-                </form>
-              </div>
-              <div>
-                <p>or</p>
-              </div>
-              <div>
-                <p>use my <a onClick={() => { this.getLocation()}}>current position</a></p>
-              </div>
+            <div className="search-container">
+              <form onSubmit={this.handleSubmit}>
+                <input className="search-input" type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
+                <Search size={35} className="search-icon" onClick={ (e) => { this.handleSubmit(e)}} />
+              </form>
+              <p>or</p>
+              <p className="search-curent-loc">use my <a onClick={() => { this.getLocation()}}>current position</a></p>
             </div>
           )
         }
         {
           this.state.displayWeather && (
-            <div>
-              <div>
-                <div>
-                  <div onClick={ () => { this.setState({displayWeather: false})}}>BACK</div>
-                  <h2>{this.state.city}</h2>
+            <div className="weather-container">
+              <div className="upper-section">
+                <div className="back-and-city">
+                  <BackArrow size={35} onClick={ () => { this.setState({displayWeather: false})}} />
+                  <h2 className="city-desktop">{this.state.city}</h2>
                 </div>
                 <div>
                   <label>
@@ -253,8 +251,9 @@ class App extends Component {
                   </label>
                 </div>
               </div>
+              <h2 className="city-mobile">{this.state.city}</h2>
               <div>
-                <div>
+                <div className="date-weather">
                   <h3>{this.findDate()}</h3>
                   <h4>{this.state.currentWeatherDesc}</h4>
                 </div>
@@ -305,3 +304,5 @@ export default App;
 //fix current date, get it from state
 //on refresh don't change F back to C
 //<button onClick={ () => {this.poopy()}}>CLICK</button>
+//
+//<input type="submit"/>

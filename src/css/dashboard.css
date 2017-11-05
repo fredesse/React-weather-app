@@ -1,0 +1,48 @@
+/*///////////////////////////////////////
+DASHBOARD STYLES
+///////////////////////////////////////*/
+
+.weather-container {
+  text-align: center;
+}
+
+.upper-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: .8em;
+}
+
+.city-desktop {
+  display: none;
+}
+
+.city-mobile {
+  font-size: 3em;
+  font-weight: 300;
+}
+
+.date-weather h3 {
+  font-weight: 400;
+  font-size: 2em;
+}
+
+.date-weather h4 {
+  font-weight: 300;
+  font-size: 1.5em;
+}
+
+/*///////////////////////////////////////
+MEDIA QUERIES
+///////////////////////////////////////*/
+
+@media screen and (min-width: 840px) {
+
+  .city-mobile {
+    display: none;
+  }
+
+  .city-desktop {
+    display: block;
+  }
+}
