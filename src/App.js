@@ -23,7 +23,8 @@ class App extends Component {
       currentWeatherDay: '',
       currentWeatherEvening: '',
       currentWeatherNight: '',
-      forecast: ''
+      forecast: '',
+      fiveDayForecast: ''
     }
   }
 
@@ -117,6 +118,28 @@ class App extends Component {
         this.setState({currentWeatherNight: this.calculateTemp(forecast[i].main.temp)});
       }
     }
+    this.getFiveDayForecast(forecast);
+  }
+
+  getFiveDayForecast = (forecast) => {
+    let container = [];
+    for (let i = 0; i < forecast.length; i++) {
+      if (forecast[i].dt_txt[12] === "2") {
+        container.push(forecast[i]);
+      }
+    }
+    if (container.length === 4) {
+      let today = {
+        main: {
+          temp: this.state.currentTemp
+        },
+        weather: {
+          icon: this.state.currentWeatherIcon
+        }
+      };
+      container.unshift(today);
+    }
+    this.setState({fiveDayForecast: container});
   }
 
   render() {
@@ -190,6 +213,7 @@ class App extends Component {
                 </div>
                 <div>
                   <div>5 DAY FORECAST</div>
+                  <button onClick={ () => { console.log("HEY", this.state.fiveDayForecast)}}>CLICK</button>
                 </div>
               </div>
             </div>
