@@ -65,7 +65,6 @@ class App extends Component {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
-      console.log("STATE", this.state);
       let lat = this.state.latitude;
       let lon = this.state.longitude;
       this.axiosGETreq(`lat=${lat}&lon=${lon}&APPID=${api_key}`);
@@ -73,7 +72,6 @@ class App extends Component {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
-      console.log("DONE!");
     } else {
       alert("Current location is not supported by this browser");
     }
@@ -84,7 +82,6 @@ class App extends Component {
     this.setState({
       city: event.target.value
     });
-    console.log("CITY", this.state.city);
   }
 
   //submit a GET request
@@ -97,7 +94,6 @@ class App extends Component {
   axiosGETreq = (URL) => {
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?${URL}`)
       .then(res => {
-        console.log("AXIOS RESPONSE:", res.data);
         let weatherData = {
           latitude: res.data.city.coord.lat,
           longitude: res.data.city.coord.lon,
@@ -122,7 +118,6 @@ class App extends Component {
         });
         this.getTodaysTemps();
         this.getFiveDayForecast();
-        console.log("TODAY", this.state.fiveDayForecast);
         localStorage.setItem('data', JSON.stringify(weatherData));
       })
       .catch(error => {
@@ -167,7 +162,6 @@ class App extends Component {
         todaysTemps["currentWeatherNight"] = forecast[i].main.temp;
       }
     }
-    console.log("POOO", todaysTemps);
     localStorage.setItem('todaysTemps', JSON.stringify(todaysTemps));
   }
 
@@ -194,7 +188,6 @@ class App extends Component {
     }
     this.setState({fiveDayForecast: container});
     localStorage.setItem('fiveDayForecast', JSON.stringify(this.state.fiveDayForecast));
-    console.log("I WAS EXECUTED");
   }
 
   whatDayIsIt = (index) => {
@@ -204,8 +197,8 @@ class App extends Component {
   }
 
   handleTempChange = (e) => {
-    console.log("TEMP", e.target.checked);
     this.setState({tempInCelsius: e.target.checked});
+    localStorage.setItem('temp', JSON.stringify(e.target.checked));
     this.forceUpdate();
   }
 
@@ -223,15 +216,13 @@ class App extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const cachedData = JSON.parse(localStorage.getItem('data'));
     const cachedFiveDayForecast = JSON.parse(localStorage.getItem('fiveDayForecast'));
     const cachedTodaysTemps = JSON.parse(localStorage.getItem('todaysTemps'));
+    const cachedTempInCelsius = JSON.parse(localStorage.getItem('temp'));
 
     if (cachedData) {
-      console.log("CACHED DATA", cachedData);
-      console.log("CONTAINER", cachedFiveDayForecast);
-      console.log("WHEEEE", cachedTodaysTemps);
       //set state with cached data
       this.setState({
         latitude: cachedData.latitude,
@@ -247,7 +238,8 @@ class App extends Component {
         currentWeatherMorning: cachedTodaysTemps.currentWeatherMorning,
         currentWeatherDay: cachedTodaysTemps.currentWeatherDay,
         currentWeatherEvening: cachedTodaysTemps.currentWeatherEvening,
-        currentWeatherNight: cachedTodaysTemps.currentWeatherNight
+        currentWeatherNight: cachedTodaysTemps.currentWeatherNight,
+        tempInCelsius: cachedTempInCelsius
       });
     }
   }
@@ -340,6 +332,3 @@ class App extends Component {
 export default App;
 //fix current date, get it from state
 //on refresh don't change F back to C
-//<button onClick={ () => {this.poopy()}}>CLICK</button>
-//
-//<input type="submit"/>
