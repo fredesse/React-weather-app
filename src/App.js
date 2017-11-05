@@ -5,6 +5,8 @@ import Toggle from 'react-toggle';
 
 //retrieve the API key and store it as a variable
 const api_key = process.env.REACT_APP_API_KEY;
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 class App extends Component {
   constructor(props) {
@@ -93,8 +95,8 @@ class App extends Component {
   }
 
   findDate = () => {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
+    //let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    //let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
     let date = new Date();
     let day = date.getDate();
     let weekday = date.getDay();
@@ -135,13 +137,22 @@ class App extends Component {
         main: {
           temp: this.state.currentTemp
         },
-        weather: {
+        weather: [
+          {
           icon: this.state.currentWeatherIcon
-        }
+          }
+        ]
       };
       container.unshift(today);
     }
     this.setState({fiveDayForecast: container});
+  }
+
+  whatDayIsIt = (index) => {
+    //let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
+    let date = new Date();
+    let weekday = date.getDay();
+    return days[weekday + index];
   }
 
   render() {
@@ -215,8 +226,10 @@ class App extends Component {
                 </div>
                 <div>
                   <div>
-                    {this.state.fiveDayForecast.map((forecast) => (
+                    {this.state.fiveDayForecast.map((forecast, index) => (
                       <div>
+                        {this.whatDayIsIt(index)}
+                        {forecast.weather[0].icon}
                         <h3>{this.calculateTemp(forecast.main.temp)}</h3>
                       </div>
                     )
@@ -233,10 +246,3 @@ class App extends Component {
 }
 
 export default App;
-// {this.state.fiveDayForecast.map((forecast) => (
-//   <div>
-//     <h2>{this.days[0]}</h2>
-//     <h3>{this.calculateTemp(forecast.main.temp)}</h3>
-//   </div>
-// )
-// )}
