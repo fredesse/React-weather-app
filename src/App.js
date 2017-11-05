@@ -23,6 +23,7 @@ class App extends Component {
       currentWeatherDay: '',
       currentWeatherEvening: '',
       currentWeatherNight: '',
+      forecast: ''
     }
   }
 
@@ -75,7 +76,9 @@ class App extends Component {
           currentWeatherDesc: res.data.list[0].weather[0].description,
           currentWeatherIcon: res.data.list[0].weather[0].icon,
           currentTemp: res.data.list[0].main.temp,
-        })
+          forecast: res.data.list
+        });
+        this.getTodaysTemps();
       });
   }
 
@@ -95,6 +98,25 @@ class App extends Component {
     let month = date.getMonth();
     let year = date.getFullYear();
     return `${days[weekday]}, ${months[month]} ${day} ${year}`
+  }
+
+  getTodaysTemps = () => {
+    //console.log(this.state.forecast[0].dt_txt[12]);
+    let forecast = this.state.forecast;
+    for(let i = 0; i < 8; i++) {
+      if (forecast[i].dt_txt[12] === "6") {
+        this.setState({currentWeatherMorning: this.calculateTemp(forecast[i].main.temp)});
+      }
+      if (forecast[i].dt_txt[12] === "2") {
+        this.setState({currentWeatherDay: this.calculateTemp(forecast[i].main.temp)});
+      }
+      if (forecast[i].dt_txt[12] === "8") {
+        this.setState({currentWeatherEvening: this.calculateTemp(forecast[i].main.temp)});
+      }
+      if (forecast[i].dt_txt[12] === "0") {
+        this.setState({currentWeatherNight: this.calculateTemp(forecast[i].main.temp)});
+      }
+    }
   }
 
   render() {
@@ -150,19 +172,19 @@ class App extends Component {
                   <div>
                     <div>
                       <div>Morning</div>
-                      <div></div>
+                      <div>{this.state.currentWeatherMorning}</div>
                     </div>
                     <div>
                       <div>Day</div>
-                      <div></div>
+                      <div>{this.state.currentWeatherDay}</div>
                     </div>
                     <div>
                       <div>Evening</div>
-                      <div></div>
+                      <div>{this.state.currentWeatherEvening}</div>
                     </div>
                     <div>
                       <div>Night</div>
-                      <div></div>
+                      <div>{this.state.currentWeatherNight}</div>
                     </div>
                   </div>
                 </div>
