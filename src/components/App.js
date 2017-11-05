@@ -177,7 +177,7 @@ class App extends Component {
   whatDayIsIt = (index) => {
     let date = new Date();
     let weekday = date.getDay();
-    return days[weekday + index];
+    return (<p className="forecast-day">{days[weekday + index]}</p>);
   }
 
   handleTempChange = (e) => {
@@ -258,22 +258,22 @@ class App extends Component {
                   <h4>{this.state.currentWeatherDesc}</h4>
                 </div>
                 <div>
-                  <div>{this.calculateTemp(this.state.currentTemp)}</div>
+                  <div className="current-weather-temp">{this.calculateTemp(this.state.currentTemp)}</div>
                   <div>{this.state.currentWeatherIcon}</div>
                   <div>
-                    <div>
+                    <div className="todays-weather">
                       <div>Morning</div>
                       <div>{this.calculateTemp(this.state.currentWeatherMorning)}</div>
                     </div>
-                    <div>
+                    <div className="todays-weather">
                       <div>Day</div>
                       <div>{this.calculateTemp(this.state.currentWeatherDay)}</div>
                     </div>
-                    <div>
+                    <div className="todays-weather">
                       <div>Evening</div>
                       <div>{this.calculateTemp(this.state.currentWeatherEvening)}</div>
                     </div>
-                    <div>
+                    <div className="todays-weather">
                       <div>Night</div>
                       <div>{this.calculateTemp(this.state.currentWeatherNight)}</div>
                     </div>
@@ -282,10 +282,10 @@ class App extends Component {
                 <div>
                   <div>
                     {this.state.fiveDayForecast.map((forecast, index) => (
-                      <div>
+                      <div key={index.toString()}>
                         {this.whatDayIsIt(index)}
                         {forecast.weather[0].icon}
-                        <h3>{this.calculateTemp(forecast.main.temp)}</h3>
+                        <div className="forecast-temp">{this.calculateTemp(forecast.main.temp)}</div>
                       </div>
                     )
                     )}

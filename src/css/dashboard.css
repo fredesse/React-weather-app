@@ -18,19 +18,48 @@ DASHBOARD STYLES
 }
 
 .city-mobile {
-  font-size: 3em;
+  font-size: 4em;
   font-weight: 300;
 }
 
 .date-weather h3 {
   font-weight: 400;
   font-size: 2em;
+  margin-bottom: 0;
 }
 
 .date-weather h4 {
   font-weight: 300;
   font-size: 1.5em;
+  margin-top: .5em;
 }
+
+.current-weather-temp {
+  font-size: 5em;
+  font-weight: 400;
+  color: #f97970;
+}
+
+.todays-weather {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 40%;
+  margin: 0 auto;
+  margin-top: .8em;
+  font-size: 1.5em;
+  font-weight: 300;
+  color: #f97970;
+}
+
+
+
+.forecast-temp,
+.forecast-day {
+  font-size: 1.2em;
+  font-weight: 300;
+}
+
 
 /*///////////////////////////////////////
 MEDIA QUERIES
