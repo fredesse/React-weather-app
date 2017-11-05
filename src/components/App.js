@@ -219,6 +219,10 @@ class App extends Component {
     return (<i className={iconClass}></i>)
   }
 
+  capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   componentDidMount = () => {
     const cachedData = JSON.parse(localStorage.getItem('data'));
     const cachedFiveDayForecast = JSON.parse(localStorage.getItem('fiveDayForecast'));
@@ -271,14 +275,14 @@ class App extends Component {
                   <BackArrow size={35} onClick={ () => { this.setState({displayWeather: false})}} />
                   <h2 className="city-desktop">{this.state.city}</h2>
                 </div>
-                <div>
+                <div className="toggle-btn">
                   <label>
                     <Toggle
                       defaultChecked={this.state.tempInCelsius}
                       className='custom-classname'
                       icons={{
-                        checked: "ON",
-                        unchecked: "OFF",
+                        checked: "℃",
+                        unchecked: "℉",
                       }}
                       onChange={this.handleTempChange} />
                   </label>
@@ -287,16 +291,16 @@ class App extends Component {
               <h2 className="city-mobile">{this.state.city}</h2>
               <div>
                 <div className="date-weather">
-                  <h3>{this.findDate()}</h3>
-                  <h4>{this.state.currentWeatherDesc}</h4>
+                  <div className="current-date">{this.findDate()}</div>
+                  <div className="current-weather-desc">{this.capitalizeFirstLetter(this.state.currentWeatherDesc)}</div>
                 </div>
-                <div>
+                <div className="current-weather-data">
                   <div className="current-weather-temp">{this.calculateTemp(this.state.currentTemp)}</div>
                   <div>{this.renderWeatherIcons(this.state.currentWeatherIcon)}</div>
-                  <div>
+                  <div className="todays-weather-parent">
                     <div className="todays-weather">
                       <div>Morning</div>
-                      <div>{this.calculateTemp(this.state.currentWeatherMorning)}</div>
+                      <div className="time-of-day">{this.calculateTemp(this.state.currentWeatherMorning)}</div>
                     </div>
                     <div className="todays-weather">
                       <div>Day</div>
@@ -313,7 +317,7 @@ class App extends Component {
                   </div>
                 </div>
                 <div>
-                  <div>
+                  <div className="forecast-list-parent">
                     {this.state.fiveDayForecast.map((forecast, index) => (
                       <div className="forecast-list" key={index.toString()}>
                         {this.whatDayIsIt(index)}

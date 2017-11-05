@@ -22,13 +22,13 @@ DASHBOARD STYLES
   font-weight: 300;
 }
 
-.date-weather h3 {
+.current-date {
   font-weight: 400;
   font-size: 2em;
   margin-bottom: 0;
 }
 
-.date-weather h4 {
+.current-weather-desc {
   font-weight: 300;
   font-size: 1.5em;
   margin-top: .5em;
@@ -37,6 +37,7 @@ DASHBOARD STYLES
 .current-weather-temp {
   font-size: 5em;
   font-weight: 400;
+  margin-top: .5em;
   color: #f97970;
 }
 
@@ -81,11 +82,73 @@ MEDIA QUERIES
 
 @media screen and (min-width: 840px) {
 
+  .upper-section {
+    padding: 0;
+  }
+
   .city-mobile {
     display: none;
   }
 
   .city-desktop {
     display: block;
+    margin: 0;
+    margin-left: 1em;
+    font-size: 2em;
   }
+
+  .back-and-city {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .date-weather {
+    margin-top: 2.5em;
+    text-align: left;
+  }
+
+  .current-date {
+    font-weight: 300;
+  }
+
+  .current-weather-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 67%;
+    margin-top: 1em;
+  }
+
+  .current-weather-temp {
+    font-size: 6em;
+    margin-top: .3em;
+  }
+
+  .todays-weather {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    margin-top: .5em;
+    font-size: 1.4em;
+  }
+
+  .todays-weather-parent {
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+  }
+
+  .time-of-day {
+    margin-left: auto;
+  }
+
+  .forecast-list-parent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
 }
