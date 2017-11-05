@@ -52,14 +52,28 @@ DASHBOARD STYLES
   color: #f97970;
 }
 
+.current-weather-icon {
+  font-size: 7em;
+  color: #f97970;
+  margin-top: .1em;
+  margin-bottom: .5em;
+}
 
+.forecast-weather-icon {
+  font-size: 3em;
+  color: #515151;
+}
 
 .forecast-temp,
 .forecast-day {
   font-size: 1.2em;
   font-weight: 300;
+  margin-top: .5em;
 }
 
+.forecast-list {
+  margin-top: 2em;
+}
 
 /*///////////////////////////////////////
 MEDIA QUERIES

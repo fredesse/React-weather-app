@@ -8,10 +8,33 @@ import Toggle from 'react-toggle';
 import Search from 'react-icons/lib/md/search';
 import BackArrow from 'react-icons/lib/md/arrow-back';
 
+import 'weather-icons/css/weather-icons.css';
+
 //retrieve the API key and store it as a variable
 const api_key = process.env.REACT_APP_API_KEY;
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const iconList = {
+  "01d": 'wi-day-sunny',
+  "01n": 'wi-night-clear',
+  "02d": 'wi-day-cloudy',
+  "02n": 'wi-night-partly-cloudy',
+  "03d": 'wi-cloud',
+  "03n": 'wi-night-alt-cloudy',
+  "04d": 'wi-cloudy',
+  "04n": 'wi-night-cloudy',
+  "09d": 'wi-showers',
+  "09n": 'wi-night-showers',
+  "10d": 'wi-rain',
+  "10n": 'wi-night-rain',
+  "11d": 'wi-thunderstorm',
+  "11n": 'wi-night-thunderstorm',
+  "13d": 'wi-snow',
+  "13n": 'wi-night-snow',
+  "50d": 'wi-fog',
+  "50n": 'wi-night-fog',
+}
 
 class App extends Component {
   constructor(props) {
@@ -186,6 +209,16 @@ class App extends Component {
     this.forceUpdate();
   }
 
+  renderWeatherIcons = (code) => {
+    let iconClass = `wi ${iconList[code]} current-weather-icon`;
+    return (<i className={iconClass}></i>)
+  }
+
+  renderForecastIcons = (code) => {
+    let iconClass = `wi ${iconList[code]} forecast-weather-icon`;
+    return (<i className={iconClass}></i>)
+  }
+
   componentDidMount = () => {
     const cachedData = JSON.parse(localStorage.getItem('data'));
     const cachedFiveDayForecast = JSON.parse(localStorage.getItem('fiveDayForecast'));
@@ -259,7 +292,7 @@ class App extends Component {
                 </div>
                 <div>
                   <div className="current-weather-temp">{this.calculateTemp(this.state.currentTemp)}</div>
-                  <div>{this.state.currentWeatherIcon}</div>
+                  <div>{this.renderWeatherIcons(this.state.currentWeatherIcon)}</div>
                   <div>
                     <div className="todays-weather">
                       <div>Morning</div>
@@ -282,9 +315,9 @@ class App extends Component {
                 <div>
                   <div>
                     {this.state.fiveDayForecast.map((forecast, index) => (
-                      <div key={index.toString()}>
+                      <div className="forecast-list" key={index.toString()}>
                         {this.whatDayIsIt(index)}
-                        {forecast.weather[0].icon}
+                        {this.renderForecastIcons(forecast.weather[0].icon)}
                         <div className="forecast-temp">{this.calculateTemp(forecast.main.temp)}</div>
                       </div>
                     )
