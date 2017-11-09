@@ -53,8 +53,17 @@ DASHBOARD STYLES
   color: #f97970;
 }
 
+.todays-weather p {
+  margin: 0;
+}
+
+.todays-weather-parent li {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+
 .current-weather-icon {
-  font-size: 7em;
+  font-size: 8em;
   color: #f97970;
   margin-top: .1em;
   margin-bottom: .5em;
@@ -135,11 +144,15 @@ MEDIA QUERIES
     font-size: 1.4em;
   }
 
+
+
   .todays-weather-parent {
     display: flex;
     flex-direction: column;
     min-width: 160px;
   }
+
+
 
   .time-of-day {
     margin-left: auto;

@@ -60,13 +60,13 @@ class App extends Component {
 
   //get current location of user and call the API
   getLocation = () => {
-    let showPosition = (position) => {
+    const showPosition = (position) => {
       this.setState({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
-      let lat = this.state.latitude;
-      let lon = this.state.longitude;
+      const lat = this.state.latitude;
+      const lon = this.state.longitude;
       this.axiosGETreq(`lat=${lat}&lon=${lon}&APPID=${api_key}`);
     }
 
@@ -87,14 +87,14 @@ class App extends Component {
   //submit a GET request
   handleSubmit = (e) => {
     e.preventDefault();
-    let loc = this.state.city;
+    const loc = this.state.city;
     this.axiosGETreq(`q=${loc}&APPID=${api_key}`);
   }
 
   axiosGETreq = (URL) => {
     axios.get(`http://api.openweathermap.org/data/2.5/forecast?${URL}`)
       .then(res => {
-        let weatherData = {
+        const weatherData = {
           latitude: res.data.city.coord.lat,
           longitude: res.data.city.coord.lon,
           city: res.data.city.name,
@@ -134,18 +134,18 @@ class App extends Component {
   }
 
   findDate = () => {
-    let date = new Date();
-    let day = date.getDate();
-    let weekday = date.getDay();
-    let month = date.getMonth();
-    let year = date.getFullYear();
+    const date = new Date();
+    const day = date.getDate();
+    const weekday = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
     return `${days[weekday]}, ${months[month]} ${day} ${year}`
   }
 
   //get temps for today by looping through the weather data array
   getTodaysTemps = () => {
-    let forecast = this.state.forecast;
-    let todaysTemps = {};
+    const forecast = this.state.forecast;
+    const todaysTemps = {};
     for(let i = 0; i < 8; i++) {
       if (forecast[i].dt_txt[12] === "6") {
         this.setState({currentWeatherMorning: forecast[i].main.temp});
@@ -169,15 +169,15 @@ class App extends Component {
 
   //get five day forecast array by searching for the 12pm time
   getFiveDayForecast = () => {
-    let forecast = this.state.forecast;
-    let container = [];
+    const forecast = this.state.forecast;
+    const container = [];
     for (let i = 0; i < forecast.length; i++) {
       if (forecast[i].dt_txt[12] === "2") {
         container.push(forecast[i]);
       }
     }
     if (container.length === 4) {
-      let today = {
+      const today = {
         main: {
           temp: this.state.currentTemp
         },
@@ -194,8 +194,8 @@ class App extends Component {
   }
 
   whatDayIsIt = (index) => {
-    let date = new Date();
-    let weekday = date.getDay();
+    const date = new Date();
+    const weekday = date.getDay();
     return (<p className="forecast-day">{days[weekday + index]}</p>);
   }
 
@@ -206,13 +206,22 @@ class App extends Component {
     this.forceUpdate();
   }
 
+  renderTodaysTemps = (time, temp) => {
+    return (
+      <li className="todays-weather">
+        <p>{time}</p>
+        <p className="time-of-day">{this.calculateTemp(temp)}</p>
+      </li>
+    )
+  }
+
   renderWeatherIcons = (code) => {
-    let iconClass = `wi ${iconList[code]} current-weather-icon`;
+    const iconClass = `wi ${iconList[code]} current-weather-icon`;
     return (<i className={iconClass}></i>)
   }
 
   renderForecastIcons = (code) => {
-    let iconClass = `wi ${iconList[code]} forecast-weather-icon`;
+    const iconClass = `wi ${iconList[code]} forecast-weather-icon`;
     return (<i className={iconClass}></i>)
   }
 
@@ -289,30 +298,18 @@ class App extends Component {
               <h2 className="city-mobile">{this.state.city}</h2>
               <div>
                 <div className="date-weather">
-                  <div className="current-date">{this.findDate()}</div>
-                  <div className="current-weather-desc">{this.capitalizeFirstLetter(this.state.currentWeatherDesc)}</div>
+                  <h3 className="current-date">{this.findDate()}</h3>
+                  <h4 className="current-weather-desc">{this.capitalizeFirstLetter(this.state.currentWeatherDesc)}</h4>
                 </div>
                 <div className="current-weather-data">
                   <div className="current-weather-temp">{this.calculateTemp(this.state.currentTemp)}</div>
                   <div>{this.renderWeatherIcons(this.state.currentWeatherIcon)}</div>
-                  <div className="todays-weather-parent">
-                    <div className="todays-weather">
-                      <div>Morning</div>
-                      <div className="time-of-day">{this.calculateTemp(this.state.currentWeatherMorning)}</div>
-                    </div>
-                    <div className="todays-weather">
-                      <div>Day</div>
-                      <div>{this.calculateTemp(this.state.currentWeatherDay)}</div>
-                    </div>
-                    <div className="todays-weather">
-                      <div>Evening</div>
-                      <div>{this.calculateTemp(this.state.currentWeatherEvening)}</div>
-                    </div>
-                    <div className="todays-weather">
-                      <div>Night</div>
-                      <div>{this.calculateTemp(this.state.currentWeatherNight)}</div>
-                    </div>
-                  </div>
+                  <ul className="todays-weather-parent">
+                    {this.renderTodaysTemps("Morning", this.state.currentWeatherMorning)}
+                    {this.renderTodaysTemps("Day", this.state.currentWeatherDay)}
+                    {this.renderTodaysTemps("Evening", this.state.currentWeatherEvening)}
+                    {this.renderTodaysTemps("Night", this.state.currentWeatherNight)}
+                  </ul>
                 </div>
                 <div>
                   <div className="forecast-list-parent">
@@ -336,3 +333,21 @@ class App extends Component {
 }
 
 export default App;
+
+//
+// <div className="todays-weather">
+//   <div>Morning</div>
+//   <div className="time-of-day">{this.calculateTemp(this.state.currentWeatherMorning)}</div>
+// </div>
+// <div className="todays-weather">
+//   <div>Day</div>
+//   <div>{this.calculateTemp(this.state.currentWeatherDay)}</div>
+// </div>
+// <div className="todays-weather">
+//   <div>Evening</div>
+//   <div>{this.calculateTemp(this.state.currentWeatherEvening)}</div>
+// </div>
+// <div className="todays-weather">
+//   <div>Night</div>
+//   <div>{this.calculateTemp(this.state.currentWeatherNight)}</div>
+// </div>
