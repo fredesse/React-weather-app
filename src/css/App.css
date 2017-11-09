@@ -23,7 +23,7 @@ SEARCH VIEW STYLES
 }
 
 .search-icon {
-  margin-left: -35px;
+  margin-left: -25px;
 }
 
 .search-container input {
@@ -33,7 +33,7 @@ SEARCH VIEW STYLES
   color: #777777;
   font-size: 2em;
   text-indent: 35px;
-  margin-right: 35px;
+  margin-right: 25px;
 }
 
 .search-container p a {

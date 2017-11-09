@@ -10,6 +10,13 @@ body {
   font-family: 'Roboto', sans-serif
 }
 
+#submit-btn {
+  background: none;
+  border: none;
+  width: 0;
+  height: 0;
+}
+
 textarea:focus,
 input:focus,
 *:focus {

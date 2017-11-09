@@ -256,10 +256,12 @@ class App extends Component {
             <div className="search-container">
               <form onSubmit={this.handleSubmit}>
                 <input className="search-input" type="text" value={this.state.city} placeholder="City" onChange={this.handleSearch}/>
-                <Search size={35} className="search-icon" onClick={ (e) => { this.handleSubmit(e)}} />
+                <button id="submit-btn" type="submit">
+                  <Search size={35} className="search-icon" />
+                </button>
               </form>
               <p>or</p>
-              <p className="search-curent-loc">use my <a onClick={() => { this.getLocation()}}>current position</a></p>
+              <p className="search-curent-loc">use my <a onClick={this.getLocation}>current position</a></p>
             </div>
           )
         }
